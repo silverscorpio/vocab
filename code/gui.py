@@ -79,11 +79,6 @@ class VocabGUI:
     def close_button(self):
         self.root.destroy()
 
-    # @staticmethod
-    # def conf_style(self):
-    #     style = ttk.Style()
-    #     style.configure()
-
 
 if __name__ == '__main__':
     VocabGUI()
