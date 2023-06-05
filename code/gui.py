@@ -12,7 +12,11 @@ class VocabGUI:
         self.root.title("Russian Vocab App")
         self.root.geometry(self.center_screen(win_width=700, win_height=500))
         self.root.resizable(False, False)
-        print(self.root.winfo_width())
+        self.root.configure(bg="#5B5C73")
+
+        # style
+        s = ttk.Style()
+        s.theme_use("clam")
 
         # FIXME unqual sizes of frame and root
         # content frame
@@ -34,23 +38,23 @@ class VocabGUI:
         self.root.rowconfigure(5, weight=1)
 
         # widgets
-        self.date_label = ttk.Label(self.root, text=VocabGUI.date_today())
-        self.word = ttk.Label(self.root, text="Word")
-        self.right = ttk.Button(self.root, text="Remember", )
-        self.wrong = ttk.Button(self.root, text="Don't Remember")
-        self.close = ttk.Button(self.root, text="Close")
+        self.date_label = ttk.Label(self.root, text=VocabGUI.date_today(), font=("Ariel", 16,))
+        self.word = ttk.Label(self.root, text="Word", font=("Ariel", 16,))
+        self.remember = ttk.Button(self.root, text="Remember", )
+        self.dont_remember = ttk.Button(self.root, text="Don't Remember")
+        self.close = ttk.Button(self.root, text="Close", command=self.close_button)
         self.meaning = ttk.Button(self.root, text="Show Meaning")
-        self.timer_label = ttk.Label(self.root, text="Timer")
-        self.status_learnt = ttk.Label(self.root, text="Learnt")
-        self.status_remaining = ttk.Label(self.root, text="Remaining")
+        self.timer_label = ttk.Label(self.root, text="Timer", font=("Ariel", 16,))
+        self.status_learnt = ttk.Label(self.root, text="Learnt", font=("Ariel", 16,))
+        self.status_remaining = ttk.Label(self.root, text="Remaining", font=("Ariel", 16,))
 
         # placing the widgets in grid
         self.date_label.grid(row=0, column=0, sticky=NW, padx=10, pady=10)
         self.timer_label.grid(row=0, column=5, sticky=NE, padx=10, pady=10)
 
         self.word.grid(row=1, column=2, padx=10, pady=10)
-        self.right.grid(row=2, column=1, padx=10, pady=10)
-        self.wrong.grid(row=2, column=3, padx=10, pady=10)
+        self.remember.grid(row=2, column=1, padx=10, pady=10)
+        self.dont_remember.grid(row=2, column=3, padx=10, pady=10)
         self.meaning.grid(row=3, column=2, padx=10, pady=10)
 
         self.status_learnt.grid(row=4, column=0, sticky=SW, padx=10, pady=10)
@@ -71,6 +75,14 @@ class VocabGUI:
         x_coordinate = (screen_width - win_width) // 2
         y_coordinate = (screen_height - win_height) // 2
         return f"{win_width}x{win_height}+{x_coordinate}+{y_coordinate}"
+
+    def close_button(self):
+        self.root.destroy()
+
+    # @staticmethod
+    # def conf_style(self):
+    #     style = ttk.Style()
+    #     style.configure()
 
 
 if __name__ == '__main__':
