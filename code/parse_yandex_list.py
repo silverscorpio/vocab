@@ -13,6 +13,6 @@ def clean_list(raw_list: list) -> dict:
 
 
 if __name__ == '__main__':
-    word_data = read_list("./word_lists/sputnik_words.txt")
+    word_data = read_list("../word_lists/sputnik_words.txt")
     for key, val in clean_list(raw_list=word_data).items():
         print(f"{key} - {val}")
