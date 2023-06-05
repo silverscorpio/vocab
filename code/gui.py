@@ -6,8 +6,9 @@ from datetime import datetime
 
 class VocabGUI:
 
-    def __init__(self):
+    def __init__(self, word_list: list[str]):
         # 1280 X 800
+        self.word_list = word_list
         self.root = Tk()
         self.root.title("Russian Vocab App")
         self.root.geometry(self.center_screen(win_width=700, win_height=500))
@@ -81,4 +82,5 @@ class VocabGUI:
 
 
 if __name__ == '__main__':
-    VocabGUI()
+    x = ["panda", "rajat"]
+    VocabGUI(word_list=x)

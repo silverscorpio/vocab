@@ -1,5 +1,9 @@
+from pathlib import Path
+
+
 def read_list(filename: str) -> list:
-    with open(filename, 'r') as f:
+    word_list_path = Path.cwd() / "word_lists" / filename
+    with open(word_list_path, 'r') as f:
         list_data = f.readlines()
     return list_data
 
@@ -13,6 +17,6 @@ def clean_list(raw_list: list) -> dict:
 
 
 if __name__ == '__main__':
-    word_data = read_list("../word_lists/sputnik_words.txt")
+    word_data = read_list(filename="sputnik_words.txt")
     for key, val in clean_list(raw_list=word_data).items():
         print(f"{key} - {val}")
