@@ -1,4 +1,5 @@
 from pathlib import Path
+import random
 
 
 class WordList:
@@ -14,24 +15,27 @@ class WordList:
         return raw_wd_list
 
     def get_wd_list_gen(self):
-        yield from self.parsed_wd_list.items()
+        yield from self.parsed_wd_list
 
     def get_next_word(self):
         return next(self.wd_list_generator)
 
     @staticmethod
-    def clean_list(raw_list: list) -> dict:
+    def clean_list(raw_list: list) -> list[tuple]:
         # TODO currently suitable for yandex translate export copy format
-        word_trans_dict = {}
         remove_newlines = [word.strip("\n") for word in raw_list if word != "\n"]
-        for idx in range(0, len(remove_newlines), 2):
-            word_trans_dict[remove_newlines[idx].lower()] = remove_newlines[idx + 1].lower()
-        return word_trans_dict
+        return [(remove_newlines[idx].lower(), remove_newlines[idx + 1].lower()) for idx in
+                range(0, len(remove_newlines), 2)]
+
+    def get_shuffled_list(self):
+        random.shuffle(self.parsed_wd_list)
 
     def __str__(self):
-        for key, val in self.parsed_wd_list.items():
-            print(f"{key} - {val}")
+        for i in self.parsed_wd_list:
+            if i is not None:
+                print(f"{i[0]} - {i[1]}")
 
 
 if __name__ == '__main__':
     wl = WordList(filename="sputnik_words.txt")
+    print(wl)

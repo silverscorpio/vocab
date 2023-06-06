@@ -1,10 +1,11 @@
-import tkinter
 from tkinter import *
 from tkinter import ttk
 from datetime import datetime
+from word_list import WordList
 
 
 class VocabGUI:
+    wl: WordList = None
 
     def __init__(self, word_list: list[str]):
         # 1280 X 800
@@ -25,11 +26,6 @@ class VocabGUI:
         # self.mainframe.grid(column=0, row=0, sticky=NSEW)
 
         self.root.columnconfigure(0, weight=1)
-        # self.root.columnconfigure(1, weight=1)
-        # self.root.columnconfigure(2, weight=1)
-        # self.root.columnconfigure(3, weight=1)
-        # self.root.columnconfigure(4, weight=1)
-        # self.root.columnconfigure(5, weight=1)
 
         self.root.rowconfigure(0, weight=1)
         self.root.rowconfigure(1, weight=1)
@@ -41,8 +37,8 @@ class VocabGUI:
         # widgets
         self.date_label = ttk.Label(self.root, text=VocabGUI.date_today(), font=("Ariel", 16,))
         self.word = ttk.Label(self.root, text="Word", font=("Ariel", 16,))
-        self.remember = ttk.Button(self.root, text="Remember", )
-        self.dont_remember = ttk.Button(self.root, text="Don't Remember")
+        self.remember = ttk.Button(self.root, text="Remember", command=self.remember_button)
+        self.dont_remember = ttk.Button(self.root, text="Don't Remember", command=self.dont_remember_button)
         self.close = ttk.Button(self.root, text="Close", command=self.close_button)
         self.meaning = ttk.Button(self.root, text="Show Meaning")
         self.timer_label = ttk.Label(self.root, text="Timer", font=("Ariel", 16,))
@@ -72,13 +68,19 @@ class VocabGUI:
     def center_screen(self, win_width: int, win_height: int):
         screen_width = self.root.winfo_screenwidth()
         screen_height = self.root.winfo_screenheight()
-
         x_coordinate = (screen_width - win_width) // 2
         y_coordinate = (screen_height - win_height) // 2
         return f"{win_width}x{win_height}+{x_coordinate}+{y_coordinate}"
 
     def close_button(self):
         self.root.destroy()
+
+    @staticmethod
+    def remember_button():
+        VocabGUI.wl.parsed_wd_list.pop(0)
+
+    def dont_remember_button(self):
+        pass
 
 
 if __name__ == '__main__':
