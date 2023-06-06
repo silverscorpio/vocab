@@ -5,16 +5,15 @@ from word_list import WordList
 
 
 class VocabGUI:
-    wl: WordList = None
 
-    def __init__(self, word_list: list[str]):
+    def __init__(self):
         # 1280 X 800
-        self.word_list = word_list
         self.root = Tk()
         self.root.title("Russian Vocab App")
-        self.root.geometry(self.center_screen(win_width=700, win_height=500))
+        self.root.geometry(self._center_screen(win_width=700, win_height=500))
         self.root.resizable(False, False)
         self.root.configure(bg="#5B5C73")
+        self.word_list = None
 
         # style
         s = ttk.Style()
@@ -36,10 +35,11 @@ class VocabGUI:
 
         # widgets
         self.date_label = ttk.Label(self.root, text=VocabGUI.date_today(), font=("Ariel", 16,))
-        self.word = ttk.Label(self.root, text="Word", font=("Ariel", 16,))
-        self.remember = ttk.Button(self.root, text="Remember", command=self.remember_button)
-        self.dont_remember = ttk.Button(self.root, text="Don't Remember", command=self.dont_remember_button)
-        self.close = ttk.Button(self.root, text="Close", command=self.close_button)
+        # self.word = ttk.Label(self.root, text="Word", font=("Ariel", 16,))
+        self.word = VocabGUI._update_insert_word()
+        self.remember = ttk.Button(self.root, text="Remember", command=self._remember_button)
+        self.dont_remember = ttk.Button(self.root, text="Don't Remember", command=self._dont_remember_button)
+        self.close = ttk.Button(self.root, text="Close", command=self._close_button)
         self.meaning = ttk.Button(self.root, text="Show Meaning")
         self.timer_label = ttk.Label(self.root, text="Timer", font=("Ariel", 16,))
         self.status_learnt = ttk.Label(self.root, text="Learnt", font=("Ariel", 16,))
@@ -65,24 +65,31 @@ class VocabGUI:
     def date_today():
         return datetime.today().strftime("%d-%m-%Y")
 
-    def center_screen(self, win_width: int, win_height: int):
+    def _center_screen(self, win_width: int, win_height: int):
         screen_width = self.root.winfo_screenwidth()
         screen_height = self.root.winfo_screenheight()
         x_coordinate = (screen_width - win_width) // 2
         y_coordinate = (screen_height - win_height) // 2
         return f"{win_width}x{win_height}+{x_coordinate}+{y_coordinate}"
 
-    def close_button(self):
+    def _close_button(self):
         self.root.destroy()
 
-    @staticmethod
-    def remember_button():
-        VocabGUI.wl.parsed_wd_list.pop(0)
-
-    def dont_remember_button(self):
+    def _remember_button(self):
         pass
+
+    def _dont_remember_button(self):
+        pass
+
+    def inject_word_list(self, file: str):
+        self.word_list = WordList(filename=file).get_shuffled_list()
+
+    def app_logic(self):
+        pass
+
+    def _update_insert_word(self):
+        return ttk.Label(self.root, text="", font=("Ariel", 16,))
 
 
 if __name__ == '__main__':
     x = ["panda", "rajat"]
-    VocabGUI(word_list=x)
