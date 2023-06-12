@@ -38,4 +38,3 @@ class WordList:
 
 if __name__ == '__main__':
     wl = WordList(filename="sputnik_words.txt")
-    print(wl)
