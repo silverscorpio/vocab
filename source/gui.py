@@ -114,11 +114,14 @@ class VocabGUI:
     def _dont_remember_button(self):
         pass
 
-    # MAIN APP LOGIC
-    def app_logic(self) -> None:
+    def set_word_list(self) -> None:
         temp_wl = WordList(filename="sputnik_words.txt")
         temp_wl.get_shuffled_list()
         self.word_list = temp_wl
+
+    # MAIN APP LOGIC
+    def app_logic(self):
+        self.set_word_list()
 
     def _update_insert_word(self, word_to_display):
         return ttk.Label(
