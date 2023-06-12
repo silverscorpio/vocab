@@ -1,11 +1,11 @@
+from datetime import datetime
 from tkinter import *
 from tkinter import ttk
-from datetime import datetime
+
 from word_list import WordList
 
 
 class VocabGUI:
-
     def __init__(self):
         self.word_list = None
         # 1280 X 800
@@ -34,16 +34,48 @@ class VocabGUI:
         self.root.rowconfigure(5, weight=1)
 
         # widgets
-        self.date_label = ttk.Label(self.root, text=VocabGUI.date_today(), font=("Ariel", 16,))
+        self.date_label = ttk.Label(
+            self.root,
+            text=VocabGUI.date_today(),
+            font=(
+                "Ariel",
+                16,
+            ),
+        )
         # self.word = ttk.Label(self.root, text="Word", font=("Ariel", 16,))
         self.word = self._update_insert_word(word_to_display="first")
-        self.remember = ttk.Button(self.root, text="Remember", command=self._remember_button)
-        self.dont_remember = ttk.Button(self.root, text="Don't Remember", command=self._dont_remember_button)
+        self.remember = ttk.Button(
+            self.root, text="Remember", command=self._remember_button
+        )
+        self.dont_remember = ttk.Button(
+            self.root, text="Don't Remember", command=self._dont_remember_button
+        )
         self.close = ttk.Button(self.root, text="Close", command=self._close_button)
         self.meaning = ttk.Button(self.root, text="Show Meaning")
-        self.timer_label = ttk.Label(self.root, text="Timer", font=("Ariel", 16,))
-        self.status_learnt = ttk.Label(self.root, text="Learnt", font=("Ariel", 16,))
-        self.status_remaining = ttk.Label(self.root, text="Remaining", font=("Ariel", 16,))
+        self.timer_label = ttk.Label(
+            self.root,
+            text="Timer",
+            font=(
+                "Ariel",
+                16,
+            ),
+        )
+        self.status_learnt = ttk.Label(
+            self.root,
+            text="Learnt",
+            font=(
+                "Ariel",
+                16,
+            ),
+        )
+        self.status_remaining = ttk.Label(
+            self.root,
+            text="Remaining",
+            font=(
+                "Ariel",
+                16,
+            ),
+        )
 
         # placing the widgets in grid
         self.date_label.grid(row=0, column=0, sticky=NW, padx=10, pady=10)
@@ -89,13 +121,20 @@ class VocabGUI:
         self.word_list = temp_wl
 
     def _update_insert_word(self, word_to_display):
-        return ttk.Label(self.root, text=word_to_display, font=("Ariel", 16,))
+        return ttk.Label(
+            self.root,
+            text=word_to_display,
+            font=(
+                "Ariel",
+                16,
+            ),
+        )
 
     def get_wd_list(self) -> list[tuple]:
         return self.word_list.parsed_wd_list
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     y = VocabGUI()
     y.app_logic()
     print(y.get_wd_list())

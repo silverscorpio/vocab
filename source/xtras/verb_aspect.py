@@ -1,5 +1,5 @@
-from bs4 import BeautifulSoup
 import requests
+from bs4 import BeautifulSoup
 
 rus_word = "говорить"
 conj_url = f"https://cooljugator.com/ru/{rus_word}"
