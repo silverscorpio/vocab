@@ -36,7 +36,7 @@ class VocabGUI:
         # widgets
         self.date_label = ttk.Label(self.root, text=VocabGUI.date_today(), font=("Ariel", 16,))
         # self.word = ttk.Label(self.root, text="Word", font=("Ariel", 16,))
-        self.word = VocabGUI._update_insert_word()
+        self.word = self._update_insert_word()
         self.remember = ttk.Button(self.root, text="Remember", command=self._remember_button)
         self.dont_remember = ttk.Button(self.root, text="Don't Remember", command=self._dont_remember_button)
         self.close = ttk.Button(self.root, text="Close", command=self._close_button)
@@ -93,3 +93,4 @@ class VocabGUI:
 
 if __name__ == '__main__':
     x = ["panda", "rajat"]
+    VocabGUI()
