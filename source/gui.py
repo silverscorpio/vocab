@@ -1,3 +1,4 @@
+import sys
 from datetime import datetime
 from tkinter import *
 from tkinter import ttk
@@ -10,8 +11,7 @@ class VocabGUI:
         # variables
         self.word_list = None
         self.app_begin: bool = False
-        self.remember_status: bool = False
-        self.not_remember_status: bool = False
+        self._remember_status: bool = False
 
         # tkinter specific variables
         # 1280 X 800
@@ -22,6 +22,7 @@ class VocabGUI:
         self.root.configure(bg="#5B5C73")
 
         self.word_variable = StringVar(master=self.root, value="WORDS")
+        self.meaning_variable = StringVar(master=self.root, value="MEANING")
 
         # style
         s = ttk.Style()
@@ -67,7 +68,7 @@ class VocabGUI:
             self.root, text="Don't Remember", command=self._dont_remember_button
         )
         self.close = ttk.Button(self.root, text="Close", command=self._close_button)
-        self.meaning = ttk.Button(self.root, text="Show Meaning")
+        self.meaning = ttk.Button(self.root, textvariable=self.meaning_variable)
         self.timer_label = ttk.Label(
             self.root,
             text="Timer",
@@ -125,13 +126,26 @@ class VocabGUI:
 
     def _begin_button(self):
         self.app_begin = True
-        self.app_logic()
+        self.set_word_list()
+        word_from_list = self.display_word()
+        self._show_meaning(word_meaning=word_from_list[1])
+        # while True:
+        #     _ = self.display_word()
+        # while self.word_list.parsed_wd_list:
+        #     word_from_list = self.display_word()
+        # if self._remember_status:
+        #     self.word_list.parsed_wd_list.pop(
+        #         self.word_list.parsed_wd_list.index(word_from_list)
+        #     )
 
-    def _remember_button(self):
-        pass
+    def _remember_button(self, word_to_pop):
+        self._remember_status = True
+        self.word_list.parsed_wd_list.pop(
+            self.word_list.parsed_wd_list.index(word_to_pop)
+        )
 
     def _dont_remember_button(self):
-        pass
+        self._remember_status = False
 
     def set_word_list(self) -> None:
         temp_wl = WordList(filename="sputnik_words.txt")
@@ -139,10 +153,16 @@ class VocabGUI:
         self.word_list = temp_wl
 
     # MAIN APP LOGIC
-    def app_logic(self):
-        self.set_word_list()
+    def display_word(self) -> tuple:
         _word_gen = self.word_list.wd_list_generator
-        self._update_insert_word(word_to_display=next(_word_gen)[0])
+        try:
+            next_word = next(_word_gen)
+        except StopIteration:
+            print("Word list empty")
+            sys.exit()
+        else:
+            self._update_insert_word(word_to_display=next_word[0])
+            return next_word
 
     def _update_insert_word(self, word_to_display):
         self.word_variable.set(value=word_to_display)
@@ -161,8 +181,11 @@ class VocabGUI:
     def get_wd_list(self) -> list[tuple]:
         return self.word_list.parsed_wd_list
 
+    def _show_meaning(self, word_meaning: str):
+        self.meaning_variable.set(value=word_meaning)
+
 
 if __name__ == "__main__":
     y = VocabGUI()
-    y.app_logic()
+    y.display_word()
     # print(y.get_wd_list())
