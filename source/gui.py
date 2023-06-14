@@ -7,12 +7,11 @@ from word_list import WordList
 
 
 class VocabGUI:
-    WORDS_FILENAME = "sputnik.txt"
+    WORDS_FILENAME = "sputnik_words.txt"
 
     def __init__(self):
         # variables
         self.word_list = None
-        self._remember_status: bool = False
         self._current_word = None
 
         # tkinter specific variables
@@ -38,7 +37,6 @@ class VocabGUI:
         # self.mainframe.grid(column=0, row=0, sticky=NSEW)
 
         self.root.columnconfigure(0, weight=1)
-
         self.root.rowconfigure(0, weight=1)
         self.root.rowconfigure(1, weight=1)
         self.root.rowconfigure(2, weight=1)
@@ -63,8 +61,7 @@ class VocabGUI:
             ),
             textvariable=self.word_variable,
         )
-        # self.word = self._update_insert_word(word_to_display="WORDS")
-        self.begin = ttk.Button(self.root, text="Begin", command=self._begin_button)
+        self.start = ttk.Button(self.root, text="Start", command=self._start_button)
         self.remember = ttk.Button(
             self.root, text="Remember", command=self._remember_button
         )
@@ -102,7 +99,7 @@ class VocabGUI:
 
         # placing the widgets in grid
         self.date_label.grid(row=0, column=0, sticky=NW, padx=10, pady=10)
-        self.begin.grid(row=0, column=2, sticky=NE, padx=10, pady=10)
+        self.start.grid(row=0, column=2, sticky=NE, padx=10, pady=10)
         self.timer_label.grid(row=0, column=5, sticky=NE, padx=10, pady=10)
 
         self.word.grid(row=1, column=2, padx=10, pady=10)
@@ -134,18 +131,22 @@ class VocabGUI:
     def _close_button(self):
         self.root.destroy()
 
-    def _begin_button(self):
+    def _start_button(self):
+        self.fetch_update_word()
+
+    def fetch_update_word(self):
         self.generate_word()
         self.display_word()
 
     def _remember_button(self):
-        self._remember_status = True
-        self.word_list.parsed_wd_list.pop(
+        removed_word = self.word_list.parsed_wd_list.pop(
             self.word_list.parsed_wd_list.index(self._current_word)
         )
+        print(removed_word)
+        self.fetch_update_word()
 
     def _dont_remember_button(self):
-        self._remember_status = False
+        self.fetch_update_word()
 
     def set_word_list(self) -> None:
         temp_wl = WordList(filename=VocabGUI.WORDS_FILENAME)
