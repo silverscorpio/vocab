@@ -8,6 +8,7 @@ from word_list import WordList
 
 class VocabGUI:
     WORDS_FILENAME = "sputnik_words.txt"
+    DATE_TODAY = datetime.today().strftime("%d-%m-%Y")
 
     def __init__(
         self,
@@ -42,7 +43,7 @@ class VocabGUI:
 
         # string variables for tkinter elements
         self.word_variable = StringVar(master=self.root, value="Words")
-        self.meaning_variable = StringVar(master=self.root, value="Meaning")
+        self.meaning_variable = StringVar(master=self.root, value="Show Meaning")
 
         # style
         s = ttk.Style()
@@ -60,7 +61,7 @@ class VocabGUI:
         # widgets
         self.date_label = ttk.Label(
             self.root,
-            text=VocabGUI.date_today(),
+            text=VocabGUI.DATE_TODAY,
             font=self.font,
         )
         self.word = ttk.Label(
@@ -77,7 +78,9 @@ class VocabGUI:
         )
         self.close = ttk.Button(self.root, text="Close", command=self._close_button)
         self.meaning = ttk.Button(
-            self.root, textvariable=self.meaning_variable, command=self._show_meaning
+            self.root,
+            textvariable=self.meaning_variable,
+            command=lambda: self._show_meaning(text_to_show=self._current_word[1]),
         )
         self.timer_label = ttk.Label(
             self.root,
@@ -96,24 +99,24 @@ class VocabGUI:
         )
 
         # placing the widgets in grid
+        # top row
         self.date_label.grid(row=0, column=0, sticky=NW, padx=10, pady=10)
         self.start.grid(row=0, column=2, sticky=NE, padx=10, pady=10)
         self.timer_label.grid(row=0, column=5, sticky=NE, padx=10, pady=10)
 
+        # middle row
         self.word.grid(row=1, column=2, padx=10, pady=10)
         self.remember.grid(row=2, column=1, padx=10, pady=10)
         self.dont_remember.grid(row=2, column=3, padx=10, pady=10)
         self.meaning.grid(row=3, column=2, padx=10, pady=10)
 
+        # bottom row
         self.status_learnt.grid(row=4, column=0, sticky=SW, padx=10, pady=10)
         self.status_remaining.grid(row=5, column=0, sticky=SW, padx=10, pady=10)
         self.close.grid(row=5, column=5, sticky=SE, padx=10, pady=10)
 
+        # start the main event loop of tkinter and get word list
         self.initiate_app()
-
-    @staticmethod
-    def date_today():
-        return datetime.today().strftime("%d-%m-%Y")
 
     def _center_screen(self, win_width: int, win_height: int):
         screen_width = self.root.winfo_screenwidth()
@@ -130,22 +133,22 @@ class VocabGUI:
         self.root.destroy()
 
     def _start_button(self):
-        self.fetch_update_word()
+        self.fetch_update_reset_word()
 
-    def fetch_update_word(self):
+    def fetch_update_reset_word(self):
         self.generate_word()
-        self.display_word()
-        self.meaning_variable.set(value="Show Meaning")
+        self._display_word()
+        self._show_meaning()
 
     def _remember_button(self):
         removed_word = self.word_list.parsed_wd_list.pop(
             self.word_list.parsed_wd_list.index(self._current_word)
         )
         print(removed_word)
-        self.fetch_update_word()
+        self.fetch_update_reset_word()
 
     def _dont_remember_button(self):
-        self.fetch_update_word()
+        self.fetch_update_reset_word()
 
     def set_word_list(self) -> None:
         temp_wl = WordList(filename=VocabGUI.WORDS_FILENAME)
@@ -157,17 +160,17 @@ class VocabGUI:
         try:
             self._current_word = next(_word_gen)
         except StopIteration:
-            print("Word list empty")
+            print("Word List Empty!")
             sys.exit()
 
-    def display_word(self):
+    def _display_word(self):
         self.word_variable.set(value=self._current_word[0])
 
     def get_wd_list(self) -> list[tuple]:
         return self.word_list.parsed_wd_list
 
-    def _show_meaning(self):
-        self.meaning_variable.set(value=self._current_word[1])
+    def _show_meaning(self, text_to_show: str = "Show meaning"):
+        self.meaning_variable.set(value=text_to_show)
 
 
 if __name__ == "__main__":
