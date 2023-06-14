@@ -8,5 +8,5 @@
 *not in any priority*
 
 * progress save functionality
-* instruction dialog
+* ~~instruction dialog~~
 * time-mode

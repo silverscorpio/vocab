@@ -1,7 +1,7 @@
 import sys
 from datetime import datetime
 from tkinter import *
-from tkinter import ttk
+from tkinter import messagebox, ttk
 
 from word_list import WordList
 
@@ -34,6 +34,7 @@ class VocabGUI:
         self.font_family = font_family
         self.font_type = font_type
         self.font: tuple = (self.font_family, self.font_size, self.font_type)
+        self.padding: dict = {"padx": 10, "pady": 10}
 
         # tkinter specific variables
         # 1280 X 800
@@ -52,6 +53,7 @@ class VocabGUI:
         self.status_remaining_variable = StringVar(
             master=self.root, value="Words Remaining "
         )
+        self.timer_variable = StringVar(master=self.root, value="Timer")
 
         # style
         s = ttk.Style()
@@ -97,6 +99,7 @@ class VocabGUI:
             textvariable=self.word_variable,
         )
         self.start = ttk.Button(self.root, text="Start", command=self._start_button)
+        self.info = ttk.Button(self.root, text="Info", command=self.info_button)
         self.remember = ttk.Button(
             self.root, text="Remember", command=self._remember_button
         )
@@ -113,9 +116,7 @@ class VocabGUI:
             ),
         )
         self.timer_label = ttk.Label(
-            self.root,
-            text="Timer",
-            font=self.font,
+            self.root, font=self.font, textvariable=self.timer_variable
         )
         self.status_learnt = ttk.Label(
             self.root, font=self.font, textvariable=self.status_learnt_variable
@@ -126,20 +127,21 @@ class VocabGUI:
 
         # placing the widgets in grid
         # top row
-        self.date_label.grid(row=0, column=0, sticky=NW, padx=10, pady=10)
-        self.start.grid(row=0, column=2, sticky=NE, padx=10, pady=10)
-        self.timer_label.grid(row=0, column=5, sticky=NE, padx=10, pady=10)
+        self.date_label.grid(row=0, column=0, sticky=NW, **self.padding)
+        self.start.grid(row=0, column=1, sticky=NE, **self.padding)
+        self.info.grid(row=0, column=3, sticky=NE, padx=10, pady=10)
+        self.timer_label.grid(row=0, column=5, sticky=NE, **self.padding)
 
         # middle row
-        self.word.grid(row=1, column=2, padx=10, pady=10)
-        self.remember.grid(row=2, column=1, padx=10, pady=10)
-        self.dont_remember.grid(row=2, column=3, padx=10, pady=10)
-        self.meaning.grid(row=3, column=2, padx=10, pady=10)
+        self.word.grid(row=1, column=2, **self.padding)
+        self.remember.grid(row=2, column=1, **self.padding)
+        self.dont_remember.grid(row=2, column=3, **self.padding)
+        self.meaning.grid(row=3, column=2, **self.padding)
 
         # bottom row
-        self.status_learnt.grid(row=4, column=0, sticky=SW, padx=10, pady=10)
-        self.status_remaining.grid(row=5, columnspan=2, sticky=SW, padx=10, pady=10)
-        self.close.grid(row=5, column=5, sticky=SE, padx=10, pady=10)
+        self.status_learnt.grid(row=4, column=0, sticky=SW, **self.padding)
+        self.status_remaining.grid(row=5, columnspan=2, sticky=SW, **self.padding)
+        self.close.grid(row=5, column=5, sticky=SE, **self.padding)
 
         # start the main event loop of tkinter and get word list
         self.initiate_app()
@@ -188,6 +190,16 @@ class VocabGUI:
 
     def _dont_remember_button(self) -> None:
         self.update()
+
+    @staticmethod
+    def info_button() -> None:
+        messagebox.showinfo(
+            title="Info",
+            message="""
+            Welcome to Vocab Practice App! Bring along a word list to practice, use it to learn the words,
+            track the ones you remember and ones you don't. Make progress & have fun!
+            """,
+        )
 
     def set_word_list(self) -> None:
         temp_wl = WordList(filename=VocabGUI.WORDS_FILENAME)
