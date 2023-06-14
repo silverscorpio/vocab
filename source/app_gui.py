@@ -123,24 +123,24 @@ class VocabGUI:
         # start the main event loop of tkinter and get word list
         self.initiate_app()
 
-    def _center_screen(self, win_width: int, win_height: int):
+    def _center_screen(self, win_width: int, win_height: int) -> str:
         screen_width = self.root.winfo_screenwidth()
         screen_height = self.root.winfo_screenheight()
         x_coordinate = (screen_width - win_width) // 2
         y_coordinate = (screen_height - win_height) // 2
         return f"{win_width}x{win_height}+{x_coordinate}+{y_coordinate}"
 
-    def initiate_app(self):
+    def initiate_app(self) -> None:
         self.set_word_list()
         self.root.mainloop()
 
-    def _close_button(self):
+    def _close_button(self) -> None:
         self.root.destroy()
 
-    def _start_button(self):
+    def _start_button(self) -> None:
         self.update()
 
-    def update(self):
+    def update(self) -> None:
         self.generate_word()
         VocabGUI._show_variable(
             variable_to_set=self.word_variable, text_to_show=self._current_word[0]
@@ -157,7 +157,7 @@ class VocabGUI:
             text_to_show=f"Words Remaining: {self.orig_word_list_length - self.words_learnt}",
         )
 
-    def _remember_button(self):
+    def _remember_button(self) -> None:
         removed_word = self.word_list.parsed_wd_list.pop(
             self.word_list.parsed_wd_list.index(self._current_word)
         )
@@ -165,7 +165,7 @@ class VocabGUI:
         self.words_learnt += 1
         self.update()
 
-    def _dont_remember_button(self):
+    def _dont_remember_button(self) -> None:
         self.update()
 
     def set_word_list(self) -> None:
@@ -174,7 +174,7 @@ class VocabGUI:
         self.word_list = temp_wl
         self.orig_word_list_length = len(self.word_list.parsed_wd_list)
 
-    def generate_word(self):
+    def generate_word(self) -> None:
         _word_gen = self.word_list.wd_list_generator
         try:
             self._current_word = next(_word_gen)
@@ -186,7 +186,7 @@ class VocabGUI:
         return self.word_list.parsed_wd_list
 
     @staticmethod
-    def _show_variable(variable_to_set, text_to_show: str):
+    def _show_variable(variable_to_set, text_to_show: str) -> None:
         variable_to_set.set(value=text_to_show)
 
 
