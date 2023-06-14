@@ -7,6 +7,6 @@
 
 *not in any priority*
 
-* progress save functionality
+* progress save functionality - db
+    * time-mode
 * ~~instruction dialog~~
-* time-mode

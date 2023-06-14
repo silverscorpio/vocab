@@ -39,7 +39,7 @@ class VocabGUI:
         # tkinter specific variables
         # 1280 X 800
         self.root = Tk()
-        self.root.title("Russian Vocab App")
+        self.root.title("Vocab Practice App")
         self.root.geometry(
             self._center_screen(win_width=self.width, win_height=self.height)
         )
@@ -53,7 +53,8 @@ class VocabGUI:
         self.status_remaining_variable = StringVar(
             master=self.root, value="Words Remaining "
         )
-        self.timer_variable = StringVar(master=self.root, value="Timer")
+        # TODO - time-based mode, couple it with save progress (db) functionality
+        # self.timer_variable = StringVar(master=self.root, value="Timer")
 
         # style
         s = ttk.Style()
@@ -115,9 +116,9 @@ class VocabGUI:
                 text_to_show=self._current_word[1],
             ),
         )
-        self.timer_label = ttk.Label(
-            self.root, font=self.font, textvariable=self.timer_variable
-        )
+        # self.timer_label = ttk.Label(
+        #     self.root, font=self.font, textvariable=self.timer_variable
+        # )
         self.status_learnt = ttk.Label(
             self.root, font=self.font, textvariable=self.status_learnt_variable
         )
@@ -128,9 +129,9 @@ class VocabGUI:
         # placing the widgets in grid
         # top row
         self.date_label.grid(row=0, column=0, sticky=NW, **self.padding)
-        self.start.grid(row=0, column=1, sticky=NE, **self.padding)
-        self.info.grid(row=0, column=3, sticky=NE, padx=10, pady=10)
-        self.timer_label.grid(row=0, column=5, sticky=NE, **self.padding)
+        self.start.grid(row=0, column=2, sticky=NE, **self.padding)
+        self.info.grid(row=0, column=5, sticky=NE, padx=10, pady=10)
+        # self.timer_label.grid(row=0, column=5, sticky=NE, **self.padding)
 
         # middle row
         self.word.grid(row=1, column=2, **self.padding)
