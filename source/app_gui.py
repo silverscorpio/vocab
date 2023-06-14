@@ -44,11 +44,11 @@ class VocabGUI:
         self.root.configure(bg=self.bg_color)
 
         # string variables for tkinter elements
-        self.word_variable = StringVar(master=self.root, value="Words")
+        self.word_variable = StringVar(master=self.root, value="Words ")
         self.meaning_variable = StringVar(master=self.root, value="Show Meaning")
-        self.status_learnt_variable = StringVar(master=self.root, value="Words Learnt")
+        self.status_learnt_variable = StringVar(master=self.root, value="Words Learnt ")
         self.status_remaining_variable = StringVar(
-            master=self.root, value="Words Remaining"
+            master=self.root, value="Words Remaining "
         )
 
         # style
@@ -86,7 +86,6 @@ class VocabGUI:
         self.meaning = ttk.Button(
             self.root,
             textvariable=self.meaning_variable,
-            # command=lambda: self._show_meaning(text_to_show=self._current_word[1])
             command=lambda: VocabGUI._show_variable(
                 variable_to_set=self.meaning_variable,
                 text_to_show=self._current_word[1],
