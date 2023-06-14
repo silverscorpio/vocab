@@ -14,9 +14,10 @@ class VocabGUI:
         self,
         width: int = 700,
         height: int = 500,
-        bg_color: str = "#5B5C73",
-        font_size: int = 16,
+        bg_color: str = "#ffdc73",
+        font_size: int = 14,
         font_family: str = "Ariel",
+        font_type: str = "bold",
     ):
 
         # app logic variables
@@ -31,7 +32,8 @@ class VocabGUI:
         self.bg_color = bg_color
         self.font_size = font_size
         self.font_family = font_family
-        self.font: tuple = (self.font_family, self.font_size)
+        self.font_type = font_type
+        self.font: tuple = (self.font_family, self.font_size, self.font_type)
 
         # tkinter specific variables
         # 1280 X 800
@@ -55,7 +57,26 @@ class VocabGUI:
         s = ttk.Style()
         s.theme_use("clam")
 
-        # FIXME unqual sizes of frame and root
+        # button style
+        s.configure(
+            "TButton",
+            font=("Ariel", 13, "bold"),
+            foreground="#23272a",
+            background="#bae1ff",
+            padding=5,
+            relief="raised",
+        )
+
+        # label style
+        s.configure(
+            "TLabel",
+            font=("Ariel", 13, "bold"),
+            foreground="#23272a",
+            background="#bae1ff",
+            padding=5,
+            relief="raised",
+        )
+
         self.root.columnconfigure(0, weight=1)
         self.root.rowconfigure(0, weight=1)
         self.root.rowconfigure(1, weight=1)
