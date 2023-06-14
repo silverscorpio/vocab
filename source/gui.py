@@ -10,8 +10,8 @@ class VocabGUI:
     def __init__(self):
         # variables
         self.word_list = None
-        self.app_begin: bool = False
         self._remember_status: bool = False
+        self._current_word = None
 
         # tkinter specific variables
         # 1280 X 800
@@ -68,7 +68,9 @@ class VocabGUI:
             self.root, text="Don't Remember", command=self._dont_remember_button
         )
         self.close = ttk.Button(self.root, text="Close", command=self._close_button)
-        self.meaning = ttk.Button(self.root, textvariable=self.meaning_variable)
+        self.meaning = ttk.Button(
+            self.root, textvariable=self.meaning_variable, command=self._show_meaning
+        )
         self.timer_label = ttk.Label(
             self.root,
             text="Timer",
@@ -108,7 +110,7 @@ class VocabGUI:
         self.status_remaining.grid(row=5, column=0, sticky=SW, padx=10, pady=10)
         self.close.grid(row=5, column=5, sticky=SE, padx=10, pady=10)
 
-        self.root.mainloop()
+        self.initiate_app()
 
     @staticmethod
     def date_today():
@@ -121,27 +123,21 @@ class VocabGUI:
         y_coordinate = (screen_height - win_height) // 2
         return f"{win_width}x{win_height}+{x_coordinate}+{y_coordinate}"
 
+    def initiate_app(self):
+        self.set_word_list()
+        self.root.mainloop()
+
     def _close_button(self):
         self.root.destroy()
 
     def _begin_button(self):
-        self.app_begin = True
-        self.set_word_list()
-        word_from_list = self.display_word()
-        self._show_meaning(word_meaning=word_from_list[1])
-        # while True:
-        #     _ = self.display_word()
-        # while self.word_list.parsed_wd_list:
-        #     word_from_list = self.display_word()
-        # if self._remember_status:
-        #     self.word_list.parsed_wd_list.pop(
-        #         self.word_list.parsed_wd_list.index(word_from_list)
-        #     )
+        self.generate_word()
+        self.display_word()
 
-    def _remember_button(self, word_to_pop):
+    def _remember_button(self):
         self._remember_status = True
         self.word_list.parsed_wd_list.pop(
-            self.word_list.parsed_wd_list.index(word_to_pop)
+            self.word_list.parsed_wd_list.index(self._current_word)
         )
 
     def _dont_remember_button(self):
@@ -152,40 +148,23 @@ class VocabGUI:
         temp_wl.get_shuffled_list()
         self.word_list = temp_wl
 
-    # MAIN APP LOGIC
-    def display_word(self) -> tuple:
+    def generate_word(self):
         _word_gen = self.word_list.wd_list_generator
         try:
-            next_word = next(_word_gen)
+            self._current_word = next(_word_gen)
         except StopIteration:
             print("Word list empty")
             sys.exit()
-        else:
-            self._update_insert_word(word_to_display=next_word[0])
-            return next_word
 
-    def _update_insert_word(self, word_to_display):
-        self.word_variable.set(value=word_to_display)
-
-        # print(self.word_variable.get())
-        # _word_label = ttk.Label(
-        #     self.root,
-        #     text=word_to_display,
-        #     font=(
-        #         "Ariel",
-        #         16,
-        #     ),
-        # )
-        # _word_label.grid(row=1, column=2, padx=10, pady=10)
+    def display_word(self):
+        self.word_variable.set(value=self._current_word[0])
 
     def get_wd_list(self) -> list[tuple]:
         return self.word_list.parsed_wd_list
 
-    def _show_meaning(self, word_meaning: str):
-        self.meaning_variable.set(value=word_meaning)
+    def _show_meaning(self):
+        self.meaning_variable.set(value=self._current_word[1])
 
 
 if __name__ == "__main__":
     y = VocabGUI()
-    y.display_word()
-    # print(y.get_wd_list())
