@@ -7,6 +7,8 @@ from word_list import WordList
 
 
 class VocabGUI:
+    WORDS_FILENAME = "sputnik.txt"
+
     def __init__(self):
         # variables
         self.word_list = None
@@ -29,6 +31,8 @@ class VocabGUI:
         s.theme_use("clam")
 
         # FIXME unqual sizes of frame and root
+        # FIXME abstract out the gui building part
+
         # content frame
         # self.mainframe = ttk.Frame(self.root, width=600, height=400, relief=tkinter.GROOVE, borderwidth=5)
         # self.mainframe.grid(column=0, row=0, sticky=NSEW)
@@ -144,7 +148,7 @@ class VocabGUI:
         self._remember_status = False
 
     def set_word_list(self) -> None:
-        temp_wl = WordList(filename="sputnik_words.txt")
+        temp_wl = WordList(filename=VocabGUI.WORDS_FILENAME)
         temp_wl.get_shuffled_list()
         self.word_list = temp_wl
 
