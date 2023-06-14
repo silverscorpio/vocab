@@ -10,3 +10,4 @@
 * progress save functionality - db
     * time-mode
 * ~~instruction dialog~~
+* cmdline execution (argparse)
