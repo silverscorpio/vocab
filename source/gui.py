@@ -9,28 +9,40 @@ from word_list import WordList
 class VocabGUI:
     WORDS_FILENAME = "sputnik_words.txt"
 
-    def __init__(self, width: int = 700, height: int = 500, bg_color: str = "#5B5C73"):
+    def __init__(
+        self,
+        width: int = 700,
+        height: int = 500,
+        bg_color: str = "#5B5C73",
+        font_size: int = 16,
+        font_family: str = "Ariel",
+    ):
 
         # app logic variables
         self.word_list = None
         self._current_word = None
+
+        # app props
         self.width = width
         self.height = height
         self.bg_color = bg_color
+        self.font_size = font_size
+        self.font_family = font_family
+        self.font: tuple = (self.font_family, self.font_size)
 
         # tkinter specific variables
         # 1280 X 800
         self.root = Tk()
         self.root.title("Russian Vocab App")
         self.root.geometry(
-            self._center_screen(win_width=self.width, win_height=self.width)
+            self._center_screen(win_width=self.width, win_height=self.height)
         )
         self.root.resizable(False, False)
         self.root.configure(bg=self.bg_color)
 
         # string variables for tkinter elements
-        self.word_variable = StringVar(master=self.root, value="WORDS")
-        self.meaning_variable = StringVar(master=self.root, value="MEANING")
+        self.word_variable = StringVar(master=self.root, value="Words")
+        self.meaning_variable = StringVar(master=self.root, value="Meaning")
 
         # style
         s = ttk.Style()
@@ -49,17 +61,11 @@ class VocabGUI:
         self.date_label = ttk.Label(
             self.root,
             text=VocabGUI.date_today(),
-            font=(
-                "Ariel",
-                16,
-            ),
+            font=self.font,
         )
         self.word = ttk.Label(
             self.root,
-            font=(
-                "Ariel",
-                16,
-            ),
+            font=self.font,
             textvariable=self.word_variable,
         )
         self.start = ttk.Button(self.root, text="Start", command=self._start_button)
@@ -76,26 +82,17 @@ class VocabGUI:
         self.timer_label = ttk.Label(
             self.root,
             text="Timer",
-            font=(
-                "Ariel",
-                16,
-            ),
+            font=self.font,
         )
         self.status_learnt = ttk.Label(
             self.root,
             text="Learnt",
-            font=(
-                "Ariel",
-                16,
-            ),
+            font=self.font,
         )
         self.status_remaining = ttk.Label(
             self.root,
             text="Remaining",
-            font=(
-                "Ariel",
-                16,
-            ),
+            font=self.font,
         )
 
         # placing the widgets in grid
@@ -174,4 +171,4 @@ class VocabGUI:
 
 
 if __name__ == "__main__":
-    y = VocabGUI()
+    app_gui = VocabGUI()
