@@ -1,10 +1,12 @@
-#### References and Resources
+### References and Resources
 
 * https://cooljugator.com/ru/
 * https://beautiful-soup-4.readthedocs.io/en/latest/#making-the-soup
 
-#### Thoughts
+#### Todos
 
-* decide the info to be extracted
-* make individual parsers for them
-* combine them
+*not in any priority*
+
+* progress save functionality
+* instruction dialog
+* time-mode

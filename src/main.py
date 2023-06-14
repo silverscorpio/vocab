@@ -1,7 +1,9 @@
-import datetime
-from datetime import timedelta
+from app_gui import VocabGUI
 
-t0 = datetime.datetime.today()
-while True:
-    t0 += timedelta(seconds=1)
-    print(t0.strftime("%H:%M:%S"))
+
+def main():
+    VocabGUI()
+
+
+if __name__ == "__main__":
+    main()
