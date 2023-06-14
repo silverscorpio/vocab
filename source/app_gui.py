@@ -21,7 +21,9 @@ class VocabGUI:
 
         # app logic variables
         self.word_list = None
+        self.orig_word_list_length: int = 0
         self._current_word = None
+        self.words_learnt: int = 0
 
         # app props
         self.width = width
@@ -44,6 +46,10 @@ class VocabGUI:
         # string variables for tkinter elements
         self.word_variable = StringVar(master=self.root, value="Words")
         self.meaning_variable = StringVar(master=self.root, value="Show Meaning")
+        self.status_learnt_variable = StringVar(master=self.root, value="Words Learnt")
+        self.status_remaining_variable = StringVar(
+            master=self.root, value="Words Remaining"
+        )
 
         # style
         s = ttk.Style()
@@ -80,7 +86,11 @@ class VocabGUI:
         self.meaning = ttk.Button(
             self.root,
             textvariable=self.meaning_variable,
-            command=lambda: self._show_meaning(text_to_show=self._current_word[1]),
+            # command=lambda: self._show_meaning(text_to_show=self._current_word[1])
+            command=lambda: VocabGUI._show_variable(
+                variable_to_set=self.meaning_variable,
+                text_to_show=self._current_word[1],
+            ),
         )
         self.timer_label = ttk.Label(
             self.root,
@@ -88,14 +98,10 @@ class VocabGUI:
             font=self.font,
         )
         self.status_learnt = ttk.Label(
-            self.root,
-            text="Learnt",
-            font=self.font,
+            self.root, font=self.font, textvariable=self.status_learnt_variable
         )
         self.status_remaining = ttk.Label(
-            self.root,
-            text="Remaining",
-            font=self.font,
+            self.root, font=self.font, textvariable=self.status_remaining_variable
         )
 
         # placing the widgets in grid
@@ -112,7 +118,7 @@ class VocabGUI:
 
         # bottom row
         self.status_learnt.grid(row=4, column=0, sticky=SW, padx=10, pady=10)
-        self.status_remaining.grid(row=5, column=0, sticky=SW, padx=10, pady=10)
+        self.status_remaining.grid(row=5, columnspan=2, sticky=SW, padx=10, pady=10)
         self.close.grid(row=5, column=5, sticky=SE, padx=10, pady=10)
 
         # start the main event loop of tkinter and get word list
@@ -133,44 +139,56 @@ class VocabGUI:
         self.root.destroy()
 
     def _start_button(self):
-        self.fetch_update_reset_word()
+        self.update()
 
-    def fetch_update_reset_word(self):
+    def update(self):
         self.generate_word()
-        self._display_word()
-        self._show_meaning()
+        VocabGUI._show_variable(
+            variable_to_set=self.word_variable, text_to_show=self._current_word[0]
+        )
+        VocabGUI._show_variable(
+            variable_to_set=self.meaning_variable, text_to_show="Show Meaning"
+        )
+        VocabGUI._show_variable(
+            variable_to_set=self.status_learnt_variable,
+            text_to_show=f"Words Learnt: {self.words_learnt}",
+        )
+        VocabGUI._show_variable(
+            variable_to_set=self.status_remaining_variable,
+            text_to_show=f"Words Remaining: {self.orig_word_list_length - self.words_learnt}",
+        )
 
     def _remember_button(self):
         removed_word = self.word_list.parsed_wd_list.pop(
             self.word_list.parsed_wd_list.index(self._current_word)
         )
         print(removed_word)
-        self.fetch_update_reset_word()
+        self.words_learnt += 1
+        self.update()
 
     def _dont_remember_button(self):
-        self.fetch_update_reset_word()
+        self.update()
 
     def set_word_list(self) -> None:
         temp_wl = WordList(filename=VocabGUI.WORDS_FILENAME)
         temp_wl.get_shuffled_list()
         self.word_list = temp_wl
+        self.orig_word_list_length = len(self.word_list.parsed_wd_list)
 
     def generate_word(self):
         _word_gen = self.word_list.wd_list_generator
         try:
             self._current_word = next(_word_gen)
         except StopIteration:
-            print("Word List Empty!")
+            print("Word List is Empty!")
             sys.exit()
-
-    def _display_word(self):
-        self.word_variable.set(value=self._current_word[0])
 
     def get_wd_list(self) -> list[tuple]:
         return self.word_list.parsed_wd_list
 
-    def _show_meaning(self, text_to_show: str = "Show meaning"):
-        self.meaning_variable.set(value=text_to_show)
+    @staticmethod
+    def _show_variable(variable_to_set, text_to_show: str):
+        variable_to_set.set(value=text_to_show)
 
 
 if __name__ == "__main__":
