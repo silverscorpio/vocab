@@ -9,19 +9,26 @@ from word_list import WordList
 class VocabGUI:
     WORDS_FILENAME = "sputnik_words.txt"
 
-    def __init__(self):
-        # variables
+    def __init__(self, width: int = 700, height: int = 500, bg_color: str = "#5B5C73"):
+
+        # app logic variables
         self.word_list = None
         self._current_word = None
+        self.width = width
+        self.height = height
+        self.bg_color = bg_color
 
         # tkinter specific variables
         # 1280 X 800
         self.root = Tk()
         self.root.title("Russian Vocab App")
-        self.root.geometry(self._center_screen(win_width=700, win_height=500))
+        self.root.geometry(
+            self._center_screen(win_width=self.width, win_height=self.width)
+        )
         self.root.resizable(False, False)
-        self.root.configure(bg="#5B5C73")
+        self.root.configure(bg=self.bg_color)
 
+        # string variables for tkinter elements
         self.word_variable = StringVar(master=self.root, value="WORDS")
         self.meaning_variable = StringVar(master=self.root, value="MEANING")
 
@@ -30,12 +37,6 @@ class VocabGUI:
         s.theme_use("clam")
 
         # FIXME unqual sizes of frame and root
-        # FIXME abstract out the gui building part
-
-        # content frame
-        # self.mainframe = ttk.Frame(self.root, width=600, height=400, relief=tkinter.GROOVE, borderwidth=5)
-        # self.mainframe.grid(column=0, row=0, sticky=NSEW)
-
         self.root.columnconfigure(0, weight=1)
         self.root.rowconfigure(0, weight=1)
         self.root.rowconfigure(1, weight=1)
@@ -137,6 +138,7 @@ class VocabGUI:
     def fetch_update_word(self):
         self.generate_word()
         self.display_word()
+        self.meaning_variable.set(value="Show Meaning")
 
     def _remember_button(self):
         removed_word = self.word_list.parsed_wd_list.pop(
