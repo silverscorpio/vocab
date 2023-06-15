@@ -182,10 +182,10 @@ class VocabGUI:
         )
 
     def _remember_button(self) -> None:
-        removed_word = self.word_list.parsed_wd_list.pop(
+        _ = self.word_list.parsed_wd_list.pop(
             self.word_list.parsed_wd_list.index(self._current_word)
         )
-        print(removed_word)
+        # print(removed_word)
         self.words_learnt += 1
         self.update()
 
