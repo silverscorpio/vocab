@@ -99,20 +99,20 @@ class VocabGUI:
             text=VocabGUI.DATE_TODAY,
             font=self.font,
         )
+        self.start = ttk.Button(self.root, text="Start", command=self._start_button)
+        self.info = ttk.Button(self.root, text="Info", command=self.info_button)
+
         self.word = ttk.Label(
             self.root,
             font=self.font,
             textvariable=self.word_variable,
         )
-        self.start = ttk.Button(self.root, text="Start", command=self._start_button)
-        self.info = ttk.Button(self.root, text="Info", command=self.info_button)
         self.remember = ttk.Button(
             self.root, text="Remember", command=self._remember_button
         )
         self.dont_remember = ttk.Button(
             self.root, text="Don't Remember", command=self._dont_remember_button
         )
-        self.close = ttk.Button(self.root, text="Close", command=self._close_button)
         self.meaning = ttk.Button(
             self.root,
             textvariable=self.meaning_variable,
@@ -121,21 +121,23 @@ class VocabGUI:
                 text_to_show=self._current_word[1],
             ),
         )
-        # self.timer_label = ttk.Label(
-        #     self.root, font=self.font, textvariable=self.timer_variable
-        # )
         self.status_learnt = ttk.Label(
             self.root, font=self.font, textvariable=self.status_learnt_variable
         )
         self.status_remaining = ttk.Label(
             self.root, font=self.font, textvariable=self.status_remaining_variable
         )
+        self.close = ttk.Button(self.root, text="Close", command=self._close_button)
+
+        # self.timer_label = ttk.Label(
+        #     self.root, font=self.font, textvariable=self.timer_variable
+        # )
 
         # placing the widgets in grid
         # top row
         self.date_label.grid(row=0, column=0, sticky=NW, **self.padding)
         self.start.grid(row=0, column=2, sticky=NE, **self.padding)
-        self.info.grid(row=0, column=5, sticky=NE, padx=10, pady=10)
+        self.info.grid(row=0, column=5, sticky=NE, **self.padding)
         # self.timer_label.grid(row=0, column=5, sticky=NE, **self.padding)
 
         # middle row
