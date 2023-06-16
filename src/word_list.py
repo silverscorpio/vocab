@@ -1,17 +1,24 @@
 import random
 from pathlib import Path
 
+from parsers_utils import general_parser, read_wd_list_from_file, yandex_parser
+
 
 class WordList:
-    def __init__(self, filename: str):
-        self.filepath = Path.cwd().parents[0] / "word_lists" / filename
-        self.parsed_wd_list = WordList.clean_list(raw_list=self.read_wd_list())
+    def __init__(self, filepath: str | Path):
+        self.filepath = filepath
         self.wd_list_generator = self.get_wd_list_gen()
+        self.parsed_wd_list: list[tuple] = []
 
-    def read_wd_list(self) -> list:
-        with open(self.filepath, "r") as f:
-            raw_wd_list = f.readlines()
-        return raw_wd_list
+    def get_yandex_parsed_wl(self):
+        self.parsed_wd_list = yandex_parser(
+            raw_list=read_wd_list_from_file(file_path=self.filepath)
+        )
+
+    def get_general_parsed_wl(self):
+        self.parsed_wd_list = general_parser(
+            raw_list=read_wd_list_from_file(file_path=self.filepath)
+        )
 
     def get_wd_list_gen(self):
         yield from self.parsed_wd_list
@@ -19,23 +26,17 @@ class WordList:
     def get_next_word(self):
         return next(self.wd_list_generator)
 
-    @staticmethod
-    def clean_list(raw_list: list) -> list[tuple]:
-        # TODO currently suitable for yandex translate export copy format
-        remove_newlines = [word.strip("\n") for word in raw_list if word != "\n"]
-        return [
-            (remove_newlines[idx].lower(), remove_newlines[idx + 1].lower())
-            for idx in range(0, len(remove_newlines), 2)
-        ]
-
-    def get_shuffled_list(self):
+    def shuffle_wd_list(self):
         random.shuffle(self.parsed_wd_list)
 
-    def __str__(self):
-        for i in self.parsed_wd_list:
-            if i is not None:
-                print(f"{i[0]} - {i[1]}")
+    def get_wd_list(self):
+        return f"{self.parsed_wd_list[:3]}..."
 
 
 if __name__ == "__main__":
-    wl = WordList(filename="sputnik_words.txt")
+    test_fpath = Path.cwd().parents[0] / "word_lists" / "rt_learn_rus.txt"
+    wl = WordList(filepath=test_fpath)
+    wl.get_general_parsed_wl()
+    print(wl.get_wd_list())
+    g = wl.get_wd_list_gen()
+    print(g)
