@@ -203,7 +203,7 @@ class VocabGUI:
             title="Info",
             message="""
             Welcome to Vocab Practice App! Bring along a word list to practice, use it to learn the words,
-            track the ones you remember and ones you don't. Make progress & have fun!
+            track the ones you remember and the ones you don't. Make progress & have fun!
             """,
         )
 
