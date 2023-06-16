@@ -1,5 +1,6 @@
 import sys
 from datetime import datetime
+from pathlib import Path
 from tkinter import *
 from tkinter import messagebox, ttk
 
@@ -7,11 +8,12 @@ from word_list import WordList
 
 
 class VocabGUI:
-    WORDS_FILENAME = "sputnik_words.txt"
     DATE_TODAY = datetime.today().strftime("%d-%m-%Y")
 
     def __init__(
         self,
+        filepath: str | Path,
+        parser: str,
         width: int = 700,
         height: int = 500,
         bg_color: str = "#ffdc73",
@@ -19,6 +21,9 @@ class VocabGUI:
         font_family: str = "Ariel",
         font_type: str = "bold",
     ):
+        # wordlist variables
+        self.wd_list_filepath = filepath
+        self.wd_list_parser = parser
 
         # app logic variables
         self.word_list = None
@@ -203,8 +208,9 @@ class VocabGUI:
         )
 
     def set_word_list(self) -> None:
-        temp_wl = WordList(filename=VocabGUI.WORDS_FILENAME)
-        temp_wl.get_shuffled_list()
+        # dependency wordlist
+        temp_wl = WordList(filepath=self.wd_list_filepath, parser=self.wd_list_parser)
+        temp_wl.shuffle_wd_list()
         self.word_list = temp_wl
         self.orig_word_list_length = len(self.word_list.parsed_wd_list)
 
@@ -225,4 +231,5 @@ class VocabGUI:
 
 
 if __name__ == "__main__":
-    app_gui = VocabGUI()
+    test_fpath = Path.cwd().parents[0] / "word_lists" / "rt_learn_rus.txt"
+    app_gui = VocabGUI(filepath=test_fpath, parser="general")

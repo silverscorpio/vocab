@@ -5,6 +5,7 @@ from pathlib import Path, PosixPath
 
 def yandex_parser(raw_list: list[str]) -> list[tuple]:
     """Yandex translate based word lists"""
+
     # format -> word, /n, meaning
     remove_newlines = [word.strip("\n") for word in raw_list if word != "\n"]
     return [
@@ -15,6 +16,7 @@ def yandex_parser(raw_list: list[str]) -> list[tuple]:
 
 def general_parser(raw_list: list[str]) -> list[tuple]:
     """General parser for vocab lists"""
+
     # format –> word – meaning
     parsed_wd_list = []
     for pair in raw_list:
@@ -27,12 +29,14 @@ def general_parser(raw_list: list[str]) -> list[tuple]:
 
 def read_wd_list_from_file(file_path: str | Path) -> list[str]:
     """Read a word list file using its location"""
+
     with open(file_path, "r") as f:
         return f.readlines()
 
 
 def write_parsed_wd_list_to_file(wd_list_data: list[tuple]) -> None:
     """store the parsed word lists in a file"""
+
     folder_path = Path.cwd().parents[0] / "word_lists" / "test.txt"
     with open(folder_path, "w") as f:
         for pair in wd_list_data:
@@ -41,6 +45,7 @@ def write_parsed_wd_list_to_file(wd_list_data: list[tuple]) -> None:
 
 def combine_parsed_wd_lists_from_files(save_combined_data: bool = True) -> None:
     # write combined data to file in format: "word - meaning"
+
     combined_list_data = []
     parsed_lists_folder_path = (
         Path.cwd().parents[0] / "word_lists" / "parsed_word_lists"
