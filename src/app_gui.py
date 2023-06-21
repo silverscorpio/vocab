@@ -14,10 +14,10 @@ class VocabGUI:
         self,
         filepath: str | Path,
         parser: str,
-        width: int = 700,
-        height: int = 500,
-        bg_color: str = "#ffdc73",
-        font_size: int = 14,
+        width: int = 800,
+        height: int = 600,
+        bg_color: str = "#baffc9",
+        font_size: int = 12,
         font_family: str = "Ariel",
         font_type: str = "bold",
     ):
@@ -52,7 +52,7 @@ class VocabGUI:
         self.root.configure(bg=self.bg_color)
 
         # string variables for tkinter elements
-        self.word_variable = StringVar(master=self.root, value="Words ")
+        self.word_variable = StringVar(master=self.root, value="Word ")
         self.meaning_variable = StringVar(master=self.root, value="Show Meaning")
         self.status_learnt_variable = StringVar(master=self.root, value="Words Learnt ")
         self.status_remaining_variable = StringVar(
@@ -68,30 +68,34 @@ class VocabGUI:
         # button style
         s.configure(
             "TButton",
-            font=("Ariel", 13, "bold"),
+            font=("Ariel", 12, "bold"),
             foreground="#23272a",
-            background="#bae1ff",
+            background="#ffffba",
             padding=5,
-            relief="raised",
+            relief="flat",
         )
 
         # label style
         s.configure(
             "TLabel",
-            font=("Ariel", 13, "bold"),
+            font=("Ariel", 12, "bold"),
             foreground="#23272a",
-            background="#bae1ff",
+            background="#ffffba",
             padding=5,
-            relief="raised",
+            relief="flat",
         )
 
         self.root.columnconfigure(0, weight=1)
+        self.root.columnconfigure(1, weight=1)
+        self.root.columnconfigure(2, weight=1)
+        self.root.columnconfigure(3, weight=1)
+        self.root.columnconfigure(4, weight=1)
+
         self.root.rowconfigure(0, weight=1)
         self.root.rowconfigure(1, weight=1)
         self.root.rowconfigure(2, weight=1)
         self.root.rowconfigure(3, weight=1)
         self.root.rowconfigure(4, weight=1)
-        self.root.rowconfigure(5, weight=1)
 
         # widgets
         self.date_label = ttk.Label(
@@ -135,20 +139,22 @@ class VocabGUI:
 
         # placing the widgets in grid
         # top row
-        self.date_label.grid(row=0, column=0, sticky=NW, **self.padding)
-        self.start.grid(row=0, column=2, sticky=NE, **self.padding)
-        self.info.grid(row=0, column=5, sticky=NE, **self.padding)
+        self.date_label.grid(row=0, column=0, columnspan=2, sticky=NW, **self.padding)
+        self.start.grid(row=0, column=2, columnspan=2, sticky=N, **self.padding)
+        self.info.grid(row=0, column=4, columnspan=2, sticky=NE, **self.padding)
         # self.timer_label.grid(row=0, column=5, sticky=NE, **self.padding)
 
         # middle row
-        self.word.grid(row=1, column=2, **self.padding)
-        self.remember.grid(row=2, column=1, **self.padding)
-        self.dont_remember.grid(row=2, column=3, **self.padding)
-        self.meaning.grid(row=3, column=2, **self.padding)
+        self.word.grid(row=1, column=1, columnspan=4, sticky=N, **self.padding)
+        self.remember.grid(row=2, column=1, columnspan=2, sticky=NE, **self.padding)
+        self.dont_remember.grid(
+            row=2, column=3, columnspan=2, sticky=NW, **self.padding
+        )
+        self.meaning.grid(row=3, column=2, columnspan=2, **self.padding)
 
         # bottom row
-        self.status_learnt.grid(row=4, column=0, sticky=SW, **self.padding)
-        self.status_remaining.grid(row=5, columnspan=2, sticky=SW, **self.padding)
+        self.status_learnt.grid(row=4, columnspan=3, sticky=SW, **self.padding)
+        self.status_remaining.grid(row=5, columnspan=3, sticky=SW, **self.padding)
         self.close.grid(row=5, column=5, sticky=SE, **self.padding)
 
         # start the main event loop of tkinter and get word list
