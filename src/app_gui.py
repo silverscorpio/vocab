@@ -30,6 +30,7 @@ class VocabGUI:
         self.orig_word_list_length: int = 0
         self._current_word = None
         self.words_learnt: int = 0
+        self.word_list_gen = None
 
         # app props
         self.width = width
@@ -112,10 +113,17 @@ class VocabGUI:
             textvariable=self.word_variable,
         )
         self.remember = ttk.Button(
-            self.root, text="Remember", command=self._remember_button
+            self.root,
+            text="Remember",
+            command=self._remember_button,
+            state="disabled",
         )
+
         self.dont_remember = ttk.Button(
-            self.root, text="Don't Remember", command=self._dont_remember_button
+            self.root,
+            text="Don't Remember",
+            command=self._dont_remember_button,
+            state="disabled",
         )
         self.meaning = ttk.Button(
             self.root,
@@ -175,6 +183,8 @@ class VocabGUI:
         self.root.destroy()
 
     def _start_button(self) -> None:
+        self.remember.configure(state="normal")
+        self.dont_remember.configure(state="normal")
         self.update()
 
     def update(self) -> None:
@@ -218,14 +228,16 @@ class VocabGUI:
     def set_word_list(self) -> None:
         # dependency wordlist
         temp_wl = WordList(filepath=self.wd_list_filepath, parser=self.wd_list_parser)
-        temp_wl.shuffle_wd_list()
+        # temp_wl.shuffle_wd_list()
         self.word_list = temp_wl
+        self.word_list_gen = self.word_list.wd_list_generator
         self.orig_word_list_length = len(self.word_list.parsed_wd_list)
 
     def generate_word(self) -> None:
-        _word_gen = self.word_list.wd_list_generator
+        # _word_gen = self.word_list.wd_list_generator
         try:
-            self._current_word = next(_word_gen)
+            self._current_word = next(self.word_list_gen)
+            print(self._current_word)
         except StopIteration:
             print("Word List is Empty!")
             sys.exit()
