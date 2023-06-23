@@ -21,7 +21,7 @@ class VocabGUI:
         parser: str,
         width: int = 800,
         height: int = 600,
-        bg_color: str = "#ffad60",
+        bg_color: str = "#ffcf40",
         font_size: int = 13,
         font_family: str = "Avenir",
         font_type: str = "bold",
@@ -76,7 +76,7 @@ class VocabGUI:
             "TButton",
             font=self.font,
             foreground="#23272a",
-            background="#a0d6b4",
+            background="#baffc9",
             padding=5,
             relief="flat",
         )
@@ -86,7 +86,7 @@ class VocabGUI:
             "TLabel",
             font=self.font,
             foreground="#23272a",
-            background="#a0d6b4",
+            background="#baffc9",
             padding=5,
             relief="flat",
         )
@@ -194,7 +194,9 @@ class VocabGUI:
         self.update()
 
     def _remember_button(self) -> None:
-        if self.words_learnt == (self.orig_word_list_length - 1):
+        if self.words_learnt == (
+            self.orig_word_list_length - 1
+        ):  # one before the last word
             VocabGUI.info_button(msg=VocabGUI.DONE_INFO_MSG)
             sys.exit()
 
@@ -205,12 +207,18 @@ class VocabGUI:
         self.update()
 
     def _dont_remember_button(self) -> None:
+        self.word_list_obj.parsed_wd_list.append(
+            self.word_list_obj.parsed_wd_list.pop(
+                self.word_list_obj.parsed_wd_list.index(self._current_word)
+            )
+        )
+
         self.update()
 
     def set_word_list(self) -> None:
         # dependency wordlist
         temp_wl = WordList(filepath=self.wd_list_filepath, parser=self.wd_list_parser)
-        temp_wl.shuffle_wd_list()
+        # temp_wl.shuffle_wd_list()
         self.word_list_obj = temp_wl
         self.orig_word_list_length = len(self.word_list_obj.parsed_wd_list)
 
@@ -259,4 +267,4 @@ class VocabGUI:
 
 if __name__ == "__main__":
     test_fpath = Path.cwd().parents[0] / "word_lists" / "rt_learn_rus.txt"
-    app_gui = VocabGUI(filepath=test_fpath, parser="general")
+    VocabGUI(filepath=test_fpath, parser="general")
