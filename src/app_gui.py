@@ -210,7 +210,7 @@ class VocabGUI:
     def set_word_list(self) -> None:
         # dependency wordlist
         temp_wl = WordList(filepath=self.wd_list_filepath, parser=self.wd_list_parser)
-        # temp_wl.shuffle_wd_list()
+        temp_wl.shuffle_wd_list()
         self.word_list_obj = temp_wl
         self.orig_word_list_length = len(self.word_list_obj.parsed_wd_list)
 
@@ -218,7 +218,6 @@ class VocabGUI:
         self.word_list_gen = self.word_list_obj.get_wd_list_gen()
         try:
             self._current_word = next(self.word_list_gen)
-            # print(self._current_word)
         except StopIteration:
             print("Word list is empty")
             sys.exit()
