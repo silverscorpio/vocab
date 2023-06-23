@@ -9,6 +9,11 @@ from word_list import WordList
 
 class VocabGUI:
     DATE_TODAY = datetime.today().strftime("%d-%m-%Y")
+    HELP_INFO_MSG = """
+            Welcome to Vocab Practice App! Bring along a word list to practice, use it to learn the words,
+            track the ones you remember and the ones you don't. Make progress & have fun!
+            """
+    DONE_INFO_MSG = "All words learnt, Great Work!"
 
     def __init__(
         self,
@@ -26,7 +31,7 @@ class VocabGUI:
         self.wd_list_parser = parser
 
         # app logic variables
-        self.word_list = None
+        self.word_list_obj = None
         self.orig_word_list_length: int = 0
         self._current_word = None
         self.words_learnt: int = 0
@@ -105,7 +110,11 @@ class VocabGUI:
             font=self.font,
         )
         self.start = ttk.Button(self.root, text="Start", command=self._start_button)
-        self.info = ttk.Button(self.root, text="Info", command=self.info_button)
+        self.info = ttk.Button(
+            self.root,
+            text="Info",
+            command=lambda: self.info_button(msg=VocabGUI.HELP_INFO_MSG),
+        )
 
         self.word = ttk.Label(
             self.root,
@@ -205,10 +214,9 @@ class VocabGUI:
         )
 
     def _remember_button(self) -> None:
-        _ = self.word_list.parsed_wd_list.pop(
-            self.word_list.parsed_wd_list.index(self._current_word)
+        self.word_list_obj.parsed_wd_list.pop(
+            self.word_list_obj.parsed_wd_list.index(self._current_word)
         )
-        # print(removed_word)
         self.words_learnt += 1
         self.update()
 
@@ -216,34 +224,30 @@ class VocabGUI:
         self.update()
 
     @staticmethod
-    def info_button() -> None:
+    def info_button(msg: str) -> None:
         messagebox.showinfo(
             title="Info",
-            message="""
-            Welcome to Vocab Practice App! Bring along a word list to practice, use it to learn the words,
-            track the ones you remember and the ones you don't. Make progress & have fun!
-            """,
+            message=msg,
         )
 
     def set_word_list(self) -> None:
         # dependency wordlist
         temp_wl = WordList(filepath=self.wd_list_filepath, parser=self.wd_list_parser)
         # temp_wl.shuffle_wd_list()
-        self.word_list = temp_wl
-        self.word_list_gen = self.word_list.wd_list_generator
-        self.orig_word_list_length = len(self.word_list.parsed_wd_list)
+        self.word_list_obj = temp_wl
 
     def generate_word(self) -> None:
-        # _word_gen = self.word_list.wd_list_generator
+        self.word_list_gen = self.word_list_obj.get_wd_list_gen()
+        self.orig_word_list_length = len(self.word_list_obj.parsed_wd_list)
         try:
             self._current_word = next(self.word_list_gen)
             print(self._current_word)
         except StopIteration:
-            print("Word List is Empty!")
+            print("Word list is empty")
             sys.exit()
 
     def get_wd_list(self) -> list[tuple]:
-        return self.word_list.parsed_wd_list
+        return self.word_list_obj.parsed_wd_list
 
     @staticmethod
     def _show_variable(variable_to_set, text_to_show: str) -> None:
