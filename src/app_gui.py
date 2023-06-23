@@ -188,13 +188,40 @@ class VocabGUI:
         self.set_word_list()
         self.root.mainloop()
 
-    def _close_button(self) -> None:
-        self.root.destroy()
-
     def _start_button(self) -> None:
         self.remember.configure(state="normal")
         self.dont_remember.configure(state="normal")
         self.update()
+
+    def _remember_button(self) -> None:
+        if self.words_learnt == (self.orig_word_list_length - 1):
+            VocabGUI.info_button(msg=VocabGUI.DONE_INFO_MSG)
+            sys.exit()
+
+        self.word_list_obj.parsed_wd_list.pop(
+            self.word_list_obj.parsed_wd_list.index(self._current_word)
+        )
+        self.words_learnt += 1
+        self.update()
+
+    def _dont_remember_button(self) -> None:
+        self.update()
+
+    def set_word_list(self) -> None:
+        # dependency wordlist
+        temp_wl = WordList(filepath=self.wd_list_filepath, parser=self.wd_list_parser)
+        # temp_wl.shuffle_wd_list()
+        self.word_list_obj = temp_wl
+        self.orig_word_list_length = len(self.word_list_obj.parsed_wd_list)
+
+    def generate_word(self) -> None:
+        self.word_list_gen = self.word_list_obj.get_wd_list_gen()
+        try:
+            self._current_word = next(self.word_list_gen)
+            # print(self._current_word)
+        except StopIteration:
+            print("Word list is empty")
+            sys.exit()
 
     def update(self) -> None:
         self.generate_word()
@@ -213,42 +240,8 @@ class VocabGUI:
             text_to_show=f"Words Remaining: {self.orig_word_list_length - self.words_learnt}",
         )
 
-    def _remember_button(self) -> None:
-        if self.words_learnt == (self.orig_word_list_length - 1):
-            VocabGUI.info_button(msg=VocabGUI.DONE_INFO_MSG)
-            sys.exit()
-
-        self.word_list_obj.parsed_wd_list.pop(
-            self.word_list_obj.parsed_wd_list.index(self._current_word)
-        )
-        self.words_learnt += 1
-        self.update()
-
-    def _dont_remember_button(self) -> None:
-        self.update()
-
-    @staticmethod
-    def info_button(msg: str) -> None:
-        messagebox.showinfo(
-            title="Info",
-            message=msg,
-        )
-
-    def set_word_list(self) -> None:
-        # dependency wordlist
-        temp_wl = WordList(filepath=self.wd_list_filepath, parser=self.wd_list_parser)
-        # temp_wl.shuffle_wd_list()
-        self.word_list_obj = temp_wl
-        self.orig_word_list_length = len(self.word_list_obj.parsed_wd_list)
-
-    def generate_word(self) -> None:
-        self.word_list_gen = self.word_list_obj.get_wd_list_gen()
-        try:
-            self._current_word = next(self.word_list_gen)
-            # print(self._current_word)
-        except StopIteration:
-            print("Word list is empty")
-            sys.exit()
+    def _close_button(self) -> None:
+        self.root.destroy()
 
     def get_wd_list(self) -> list[tuple]:
         return self.word_list_obj.parsed_wd_list
@@ -256,6 +249,13 @@ class VocabGUI:
     @staticmethod
     def _show_variable(variable_to_set, text_to_show: str) -> None:
         variable_to_set.set(value=text_to_show)
+
+    @staticmethod
+    def info_button(msg: str) -> None:
+        messagebox.showinfo(
+            title="Info",
+            message=msg,
+        )
 
 
 if __name__ == "__main__":
