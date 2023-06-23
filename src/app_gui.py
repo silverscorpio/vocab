@@ -10,8 +10,8 @@ from word_list import WordList
 class VocabGUI:
     DATE_TODAY = datetime.today().strftime("%d-%m-%Y")
     HELP_INFO_MSG = """
-    Welcome to Vocab Practice App! Bring along a word list to practice, use it to learn the words,
-    track the ones you remember and the ones you don't. Make progress & have fun!
+    Welcome to Vocab Practice App! Bring along a word list to practice, use the app to learn the words,
+    track the ones you remember and the ones you don't. Have fun!
     """
     DONE_INFO_MSG = "All words learnt, Great Work!"
 
@@ -21,9 +21,9 @@ class VocabGUI:
         parser: str,
         width: int = 800,
         height: int = 600,
-        bg_color: str = "#baffc9",
-        font_size: int = 12,
-        font_family: str = "Ariel",
+        bg_color: str = "#ffad60",
+        font_size: int = 13,
+        font_family: str = "Avenir",
         font_type: str = "bold",
     ):
         # wordlist variables
@@ -74,9 +74,9 @@ class VocabGUI:
         # button style
         s.configure(
             "TButton",
-            font=("Ariel", 12, "bold"),
+            font=self.font,
             foreground="#23272a",
-            background="#ffffba",
+            background="#a0d6b4",
             padding=5,
             relief="flat",
         )
@@ -84,9 +84,9 @@ class VocabGUI:
         # label style
         s.configure(
             "TLabel",
-            font=("Ariel", 12, "bold"),
+            font=self.font,
             foreground="#23272a",
-            background="#ffffba",
+            background="#a0d6b4",
             padding=5,
             relief="flat",
         )
