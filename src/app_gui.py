@@ -10,9 +10,9 @@ from word_list import WordList
 class VocabGUI:
     DATE_TODAY = datetime.today().strftime("%d-%m-%Y")
     HELP_INFO_MSG = """
-            Welcome to Vocab Practice App! Bring along a word list to practice, use it to learn the words,
-            track the ones you remember and the ones you don't. Make progress & have fun!
-            """
+    Welcome to Vocab Practice App! Bring along a word list to practice, use it to learn the words,
+    track the ones you remember and the ones you don't. Make progress & have fun!
+    """
     DONE_INFO_MSG = "All words learnt, Great Work!"
 
     def __init__(
