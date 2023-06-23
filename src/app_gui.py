@@ -113,7 +113,7 @@ class VocabGUI:
         self.info = ttk.Button(
             self.root,
             text="Info",
-            command=lambda: self.info_button(msg=VocabGUI.HELP_INFO_MSG),
+            command=lambda: VocabGUI.info_button(msg=VocabGUI.HELP_INFO_MSG),
         )
 
         self.word = ttk.Label(
@@ -214,6 +214,10 @@ class VocabGUI:
         )
 
     def _remember_button(self) -> None:
+        if self.words_learnt == (self.orig_word_list_length - 1):
+            VocabGUI.info_button(msg=VocabGUI.DONE_INFO_MSG)
+            sys.exit()
+
         self.word_list_obj.parsed_wd_list.pop(
             self.word_list_obj.parsed_wd_list.index(self._current_word)
         )
@@ -235,13 +239,13 @@ class VocabGUI:
         temp_wl = WordList(filepath=self.wd_list_filepath, parser=self.wd_list_parser)
         # temp_wl.shuffle_wd_list()
         self.word_list_obj = temp_wl
+        self.orig_word_list_length = len(self.word_list_obj.parsed_wd_list)
 
     def generate_word(self) -> None:
         self.word_list_gen = self.word_list_obj.get_wd_list_gen()
-        self.orig_word_list_length = len(self.word_list_obj.parsed_wd_list)
         try:
             self._current_word = next(self.word_list_gen)
-            print(self._current_word)
+            # print(self._current_word)
         except StopIteration:
             print("Word list is empty")
             sys.exit()
