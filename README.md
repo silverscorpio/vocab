@@ -1,4 +1,4 @@
-### Vocabulary Practice App
+## Vocabulary Practice App
 
 * desktop-based application for practicing words
 * developed in Python using Tkinter for GUI
